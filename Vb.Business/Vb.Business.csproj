@@ -19,8 +19,4 @@
         <ProjectReference Include="..\Vb.Schema\Vb.Schema.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Command\" />
-    </ItemGroup>
-
 </Project>

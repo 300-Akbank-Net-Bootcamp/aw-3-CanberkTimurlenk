@@ -4,4 +4,4 @@ using Vb.Schema;
 
 namespace Vb.Business.Features.Addresses.Queries.GetByParameter;
 
-public record GetAddressByParameterQuery(int customerId, string county, string postalCode) : IRequest<ApiResponse<List<AddressResponse>>>;
+public record GetAddressByParameterQuery(int CustomerId, string County, string PostalCode) : IRequest<ApiResponse<List<AddressResponse>>>;

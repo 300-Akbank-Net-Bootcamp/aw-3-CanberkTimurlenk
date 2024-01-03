@@ -5,6 +5,7 @@ using Vb.Data;
 using Vb.Schema;
 using Microsoft.EntityFrameworkCore;
 using MediatR;
+using Vb.Business.Features.Customers.Constants;
 
 namespace Vb.Business.Features.Customers.Queries.GetById;
 
@@ -26,10 +27,12 @@ public class GetCustomerByIdQueryHandler : IRequestHandler<GetCustomerByIdQuery,
             .Include(x => x.Accounts)
             .Include(x => x.Contacts)
             .Include(x => x.Addresses)
+            .AsNoTrackingWithIdentityResolution() // since the data is fetched for read only purposes
+                                                  // as no tracking is used to improve performance            
             .FirstOrDefaultAsync(x => x.CustomerNumber == request.Id, cancellationToken);
 
         if (entity == null)
-            return new ApiResponse<CustomerResponse>("Record not found");
+            return new ApiResponse<CustomerResponse>(CustomerMessages.RecordNotExists);
 
         var mapped = mapper.Map<Customer, CustomerResponse>(entity);
         return new ApiResponse<CustomerResponse>(mapped);

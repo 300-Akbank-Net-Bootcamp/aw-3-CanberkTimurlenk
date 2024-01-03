@@ -7,8 +7,8 @@ namespace Vb.Schema;
 
 public class CustomerRequest : BaseRequest
 {
-    //[JsonIgnore] 
-    //public int CustomerNumber { get; set; }
+    [JsonIgnore]
+    public int CustomerNumber { get; set; }
     public string IdentityNumber { get; set; }
 
     public string FirstName { get; set; }

@@ -3,7 +3,7 @@ using MediatR;
 using Vb.Base.Response;
 using Vb.Data.Entity;
 using Vb.Data;
-using Microsoft.EntityFrameworkCore;
+using Vb.Business.Features.Customers.Constants;
 
 namespace Vb.Business.Features.Customers.Commands.Delete;
 
@@ -24,7 +24,7 @@ public class DeleteCustomerCommandHandler :
         var fromdb = await dbContext.Set<Customer>().FindAsync(request.Id, cancellationToken);
 
         if (fromdb == null)
-            return new ApiResponse("Record not found");
+            return new ApiResponse(CustomerMessages.RecordNotExists);
 
         fromdb.IsActive = false;
         await dbContext.SaveChangesAsync(cancellationToken);

@@ -22,7 +22,8 @@ public class GetAllAddressesQueryHandler
         CancellationToken cancellationToken)
     {
         var list = await dbContext.Set<Address>()
-            .Include(x => x.Customer).ToListAsync(cancellationToken);
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
 
         var mappedList = mapper.Map<List<Address>, List<AddressResponse>>(list);
         return new ApiResponse<List<AddressResponse>>(mappedList);

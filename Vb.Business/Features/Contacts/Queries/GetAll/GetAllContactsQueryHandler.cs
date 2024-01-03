@@ -23,7 +23,8 @@ public class GetAllContactsQueryHandler : IRequestHandler<GetAllContactsQuery, A
                CancellationToken cancellationToken)
     {
         var list = await dbContext.Set<Contact>()
-            .Include(x => x.Customer)
+            .AsNoTracking() // since the data is fetched for read only purposes
+                            // as no tracking is used to improve performance
             .ToListAsync(cancellationToken);
 
         var mappedList = mapper.Map<List<Contact>, List<ContactResponse>>(list);

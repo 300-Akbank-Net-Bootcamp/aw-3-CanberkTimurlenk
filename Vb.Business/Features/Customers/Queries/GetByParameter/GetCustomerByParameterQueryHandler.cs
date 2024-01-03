@@ -27,6 +27,8 @@ public class GetCustomerByParameterQueryHandler :
             .Include(x => x.Accounts)
             .Include(x => x.Contacts)
             .Include(x => x.Addresses)
+            .AsNoTrackingWithIdentityResolution() // since the data is fetched for read only purposes
+                                                  // as no tracking is used to improve performance            
             .Where(x =>
                 (request.FirstName == null || x.FirstName.ToUpper().Contains(request.FirstName.ToUpper())) &&
                 (request.LastName == null || x.LastName.ToUpper().Contains(request.LastName.ToUpper())) &&

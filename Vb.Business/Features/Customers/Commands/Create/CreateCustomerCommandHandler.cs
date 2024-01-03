@@ -5,9 +5,9 @@ using Vb.Data.Entity;
 using Vb.Data;
 using Vb.Schema;
 using Microsoft.EntityFrameworkCore;
+using Vb.Business.Features.Customers.Constants;
 
 namespace Vb.Business.Features.Customers.Commands.Create;
-
 public class CreateCustomerCommandHandler :
 IRequestHandler<CreateCustomerCommand, ApiResponse<CustomerResponse>>
 
@@ -29,10 +29,21 @@ IRequestHandler<CreateCustomerCommand, ApiResponse<CustomerResponse>>
         // we don't need to get the entire record from the database.
 
         if (checkIdentity)
-            return new ApiResponse<CustomerResponse>($"{request.Model.IdentityNumber} is used by another customer.");
+            return new ApiResponse<CustomerResponse>(string.Format(CustomerMessages.IdentityNumberUsedByAnotherCustomer,
+                request.Model.IdentityNumber));
 
         var entity = mapper.Map<CustomerRequest, Customer>(request.Model);
-        entity.CustomerNumber = new Random().Next(1000000, 9999999);
+
+        Random rnd = new();
+
+        entity.CustomerNumber = rnd.Next(1000000, 9999999);
+
+        entity.Accounts = entity.Accounts.Select(acc =>
+        {
+            acc.AccountNumber = rnd.Next(1000000, 9999999);
+            return acc;
+        }).ToList();
+        // we are generating random account numbers, because we have called value generated never in the entity configuration
 
         var entityResult = await dbContext.AddAsync(entity, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);

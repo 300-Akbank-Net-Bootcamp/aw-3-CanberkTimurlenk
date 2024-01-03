@@ -4,4 +4,4 @@ using Vb.Schema;
 
 namespace Vb.Business.Features.Addresses.Commands.Update;
 
-public record UpdateAddressCommand(int id, AddressRequest Model) : IRequest<ApiResponse>;
+public record UpdateAddressCommand(int Id, AddressRequest Model) : IRequest<ApiResponse>;

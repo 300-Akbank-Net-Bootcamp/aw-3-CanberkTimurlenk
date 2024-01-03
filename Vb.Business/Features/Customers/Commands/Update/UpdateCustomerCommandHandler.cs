@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Vb.Base.Response;
+using Vb.Business.Features.Customers.Constants;
 using Vb.Data;
 using Vb.Data.Entity;
 
@@ -25,7 +26,7 @@ public class UpdateCustomerCommandHandler :
             .FirstOrDefaultAsync(cancellationToken);
 
         if (fromdb == null)
-            return new ApiResponse("Record not found");
+            return new ApiResponse(CustomerMessages.RecordNotExists);
 
         fromdb.FirstName = request.Model.FirstName;
         fromdb.LastName = request.Model.LastName;

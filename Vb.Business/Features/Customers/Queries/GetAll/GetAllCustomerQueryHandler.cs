@@ -27,7 +27,10 @@ IRequestHandler<GetAllCustomerQuery, ApiResponse<List<CustomerResponse>>>
         var list = await dbContext.Set<Customer>()
             .Include(x => x.Accounts)
             .Include(x => x.Contacts)
-            .Include(x => x.Addresses).ToListAsync(cancellationToken);
+            .Include(x => x.Addresses)
+            .AsNoTrackingWithIdentityResolution() // since the data is fetched for read only purposes
+                                                  // as no tracking is used to improve performance            
+            .ToListAsync(cancellationToken);
 
         var mappedList = mapper.Map<List<Customer>, List<CustomerResponse>>(list);
         return new ApiResponse<List<CustomerResponse>>(mappedList);

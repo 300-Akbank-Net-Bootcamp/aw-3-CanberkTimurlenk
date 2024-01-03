@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Vb.Base.Response;
+using Vb.Business.Features.Contacts.Constants;
 using Vb.Data;
 using Vb.Schema;
 
@@ -21,11 +22,11 @@ public class GetContactByIdQueryHandler : IRequestHandler<GetContactByIdQuery, A
     public async Task<ApiResponse<ContactResponse>> Handle(GetContactByIdQuery request, CancellationToken cancellationToken)
     {
         var contact = await _context.Contacts
-            .Include(c => c.Customer)
-            .FirstOrDefaultAsync(x => x.Id == request.id, cancellationToken);
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
         if (contact == null)
-            return new ApiResponse<ContactResponse>("Contact not found.");
+            return new ApiResponse<ContactResponse>(ContactMessages.RecordNotExists);
 
         var response = _mapper.Map<ContactResponse>(contact);
 

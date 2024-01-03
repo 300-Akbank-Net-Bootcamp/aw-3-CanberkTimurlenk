@@ -22,7 +22,7 @@ public class CustomersController : ControllerBase
 
     // since we will be using the same endpoint for all 3 parameters, we will use the same endpoint
     [HttpGet]
-    public async Task<ApiResponse<List<CustomerResponse>>> GetCustomerByParameter(string? firstName, string? lastName, string? identityNumber)
+    public async Task<ApiResponse<List<CustomerResponse>>> GetCustomersByParameter(string? firstName, string? lastName, string? identityNumber)
     {
         var operation = new GetCustomerByParameterQuery(firstName, lastName, identityNumber);
         var result = await mediator.Send(operation);
@@ -37,10 +37,10 @@ public class CustomersController : ControllerBase
     //    return result;
     //}
 
-    [HttpGet("{id}")]
-    public async Task<ApiResponse<CustomerResponse>> Get(int id)
+    [HttpGet("{customer-number}")]
+    public async Task<ApiResponse<CustomerResponse>> Get([FromRoute(Name = "customer-number")] int customerNumber)
     {
-        var operation = new GetCustomerByIdQuery(id);
+        var operation = new GetCustomerByIdQuery(customerNumber);
         var result = await mediator.Send(operation);
         return result;
     }
@@ -53,18 +53,18 @@ public class CustomersController : ControllerBase
         return result;
     }
 
-    [HttpPut("{id}")]
-    public async Task<ApiResponse> Put(int id, [FromBody] CustomerRequest customer)
+    [HttpPut("{customer-number}")]
+    public async Task<ApiResponse> Put([FromRoute(Name = "customer-number")] int customerNumber, [FromBody] CustomerRequest customer)
     {
-        var operation = new UpdateCustomerCommand(id, customer);
+        var operation = new UpdateCustomerCommand(customerNumber, customer);
         var result = await mediator.Send(operation);
         return result;
     }
 
-    [HttpDelete("{id}")]
-    public async Task<ApiResponse> Delete(int id)
+    [HttpDelete("{customer-number}")]
+    public async Task<ApiResponse> Delete([FromRoute(Name = "customer-number")] int customerNumber)
     {
-        var operation = new DeleteCustomerCommand(id);
+        var operation = new DeleteCustomerCommand(customerNumber);
         var result = await mediator.Send(operation);
         return result;
     }

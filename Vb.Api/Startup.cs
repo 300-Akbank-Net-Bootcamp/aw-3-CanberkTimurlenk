@@ -3,8 +3,6 @@ using System.Reflection;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Vb.Data;
-using Vb.Business.Features.Customers.Commands.Create.Validation;
-using Vb.Business.Features.Customers.Commands.Create;
 using Vb.Business.Features.Reference;
 
 namespace VbApi;
@@ -30,8 +28,7 @@ public class Startup
         services.AddAutoMapper(typeof(AssemblyReference).GetTypeInfo().Assembly);
 
         services.AddControllers().AddFluentValidation(x =>
-            x.RegisterValidatorsFromAssemblyContaining<CreateCustomerValidator>());
-
+            x.RegisterValidatorsFromAssemblyContaining<AssemblyReference>());
 
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();

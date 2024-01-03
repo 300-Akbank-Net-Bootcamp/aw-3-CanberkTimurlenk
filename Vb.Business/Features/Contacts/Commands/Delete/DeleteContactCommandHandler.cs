@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Vb.Base.Response;
+using Vb.Business.Features.Contacts.Constants;
 using Vb.Data;
 using Vb.Schema;
 
@@ -19,10 +20,10 @@ public class DeleteContactCommandHandler : IRequestHandler<DeleteContactCommand,
     public async Task<ApiResponse> Handle(DeleteContactCommand request, CancellationToken cancellationToken)
     {
         var contact = await context.Contacts
-            .FindAsync(request.id, cancellationToken);
+            .FindAsync(request.Id, cancellationToken);
 
         if (contact == null)
-            return new ApiResponse("Contact not found.");
+            return new ApiResponse(ContactMessages.RecordNotExists);
 
         contact.IsActive = false;
         await context.SaveChangesAsync(cancellationToken);
